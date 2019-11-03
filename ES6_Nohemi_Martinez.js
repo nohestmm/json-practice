@@ -1,5 +1,3 @@
- //NO PUBLIQUE ESTE PROYECTO EN GITHUB, GITLAB o algun repositorio de ningun Tipo
-
  const clients = [{
          id: 1,
          taxNumber: '86620855',
@@ -169,7 +167,8 @@
 
  // 1 Arreglo con los ids de clientes ordenados por rut
  const listClientsIdsSortByTaxNumber = () => {
-     return clients.sort((clientOne, clientTwo) => clientOne.taxNumber > clientTwo.taxNumber)
+     return clients.sort((clientOne, clientTwo) =>
+             clientOne.taxNumber.localeCompare(clientTwo.taxNumber))
          .map((client => client.id))
  };
 
@@ -216,18 +215,18 @@
      const clientsArrayOrderByName = clients.sort((clientOne, clientTwo) =>
          clientOne.name.localeCompare(clientTwo.name))
 
-     console.log(clientsArrayOrderByName)
-  
+     //  console.log(clientsArrayOrderByName)
 
-    objectBanksClientsTaxNumbers.forEach((el,index )=>{
-       const values = el.value;
-          values.forEach((val,pos)=>{
-      clientsArrayOrderByName.forEach((client,position) =>{
-               if(values.includes(client.id))
-        values[pos] = clientsArrayOrderByName[pos].taxNumber
-            })
-      })
+
+     objectBanksClientsTaxNumbers.forEach(el => {
+         const values = el.value;
+         values.forEach((val, pos) => {
+             clientsArrayOrderByName.forEach((client) => {
+                 if (values.includes(client.id))
+                     values[pos] = clientsArrayOrderByName[pos].taxNumber
+             })
          })
+     })
 
      return JSON.stringify(objectBanksClientsTaxNumbers)
 
@@ -263,21 +262,23 @@
  // 6 Objeto en que las claves sean los nombres de los bancos y 
  //los valores el número de clientes que solo tengan cuentas en ese banco.
  const banksFidelity = () => {
-     let newObjectWithBanksAndFidelityClients = accounts.reduce((banksAndFidelityClients, key) => {
-         let id = key.bankId;
+    let newObjectWithBanksAndFidelityClients = accounts.reduce((clientsNumbers, el) => {
+        let id = el.bankId;
+        let clientsTaxNumbers = accounts.filter(client => client.bankId === id)
+            .map(client => client.clientId)
+        clientsNumbers[id] = [...new Set(clientsTaxNumbers)];
 
-         banksAndFidelityClients[id] = (banksAndFidelityClients[id] || 0) + 1;
-         return banksAndFidelityClients;
-     }, {})
-     let objectWithBanksAndTotalClients = banks.map(element => {
-         let value = newObjectWithBanksAndFidelityClients[element.id]
-         return Object.assign({
-             id: element.name,
-             value: value
-         })
-
-     }, {})
-     return JSON.stringify(objectWithBanksAndTotalClients);
+        return clientsNumbers
+    }, {})
+    let objectWithBanksAndTotalClients = banks.map(client => {
+        let value = newObjectWithBanksAndFidelityClients[client.id]
+        return Object.assign({
+            id: client.name,
+            value: value.length
+        })
+    })
+    
+        return JSON.stringify(objectWithBanksAndTotalClients);
  }
 
  // 7 Objeto en que las claves sean los nombres de los bancos 
@@ -286,7 +287,6 @@
      let arrayBanksClientsTaxNumbers = accounts.reduce((clientsNumbers, el) => {
          let id = el.bankId;
          let clientsTaxNumbers = accounts.filter(client => client.bankId === id)
-
 
          clientsNumbers[id] = clientsTaxNumbers.reduce((banksBalance, bank) => {
              let id = bank.clientId;
@@ -304,18 +304,19 @@
              value: value
          })
      })
-let arrayWithOnlyLessMoney = []
-     const clientWithLessMoney = banksWithTotalBalance.map(el=>el.value)
-    .map(el=>{
-        return (Object.values(el)
-        .sort((a,b) => a-b)).map((el,index)=> 
-        index === 0 ? arrayWithOnlyLessMoney.push(el): null)
-     })
-     console.log(clientWithLessMoney);
-//      const arrayWithOnlyLessMoney = []
+     let arrayWithOnlyLessMoney = []
+     banksWithTotalBalance.map(el => el.value)
+         .map(el => {
+             return (Object.values(el)
+                 .sort((a, b) => a - b)).map((el, index) =>
+                 index === 0 ? arrayWithOnlyLessMoney.push(el) : null)
+         })
 
      console.log(arrayWithOnlyLessMoney)
+
      return JSON.stringify(banksWithTotalBalance)
+
+     //  filtrar el json que tengo por el numero del arreglo que obtuve 
  }
 
  // 8 Agregar nuevo cliente con datos ficticios a "clientes" y agregar una cuenta en el BANCO ESTADO con un saldo de 9000 para este nuevo empleado. 
@@ -339,21 +340,21 @@ let arrayWithOnlyLessMoney = []
 
 
  //Impresión de soluciones. No modificar.
- //  console.log('Pregunta 0');
- //  console.log(listClientsIds());
- //  console.log('Pregunta 1');
- // //  console.log(listClientsIdsSortByTaxNumber());
- // console.log('Pregunta 2');
- // console.log(sortClientsTotalBalances());
-//  console.log('Pregunta 3');
-//  console.log(banksClientsTaxNumbers());
- // console.log('Pregunta 4');
- // console.log(richClientsBalances());
- // console.log('Pregunta 5');
- // console.log(banksRankingByTotalBalance());
+ console.log('Pregunta 0');
+ console.log(listClientsIds());
+ console.log('Pregunta 1');
+ console.log(listClientsIdsSortByTaxNumber());
+ console.log('Pregunta 2');
+ console.log(sortClientsTotalBalances());
+ console.log('Pregunta 3');
+ console.log(banksClientsTaxNumbers());
+ console.log('Pregunta 4');
+ console.log(richClientsBalances());
+ console.log('Pregunta 5');
+ console.log(banksRankingByTotalBalance());
  console.log('Pregunta 6');
  console.log(banksFidelity());
  console.log('Pregunta 7');
  console.log(banksPoorClients());
- //  console.log('Pregunta 8');
- //  console.log(newClientRanking());
+ console.log('Pregunta 8');
+ console.log(newClientRanking());
