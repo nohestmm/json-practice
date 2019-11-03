@@ -189,8 +189,8 @@
                  totalBalance: totalBalance
              })
          })
-         .sort((clientOne, clientTwo) => clientOne.name < clientTwo.name)
-         .map(client => client.name)
+         .sort((clientOne, clientTwo) => clientTwo.totalBalance - clientOne.totalBalance)
+        .map(client => client.name)
      return clientsWithTotalBalance;
  }
 
@@ -213,18 +213,23 @@
          })
      })
      
-       const clientsArrayOrderByName = clients.sort((clientOne, clientTwo) => clientOne.name > clientTwo.name)
-      .map((client => client.id))
-       console.log(clientsArrayOrderByName)
-    return JSON.stringify(objectBanksClientsTaxNumbers)
+       const clientsArrayOrderByName = clients.sort((clientOne, clientTwo) => clientOne.name.localeCompare(clientTwo.name))
+    //   .map((client => client.id))
+   console.log(clientsArrayOrderByName)
+    const arrayOrderById = clientsArrayOrderByName.map((client => client.id))
+    console.log(arrayOrderById)  
+    const arrayOderByTaxnumber =  clientsArrayOrderByName.map((client => client.taxNumber))
+    console.log(arrayOderByTaxnumber)  
+
+    return (objectBanksClientsTaxNumbers)
       
  }
 
  // 4 Arreglo ordenado decrecientemente con los saldos de clientes que tengan más de 25.000 en el Banco SANTANDER
  const richClientsBalances = () => {
      return accounts.filter(client => client.balance > 25000 && client.bankId === 1)
-         .sort((clientOne, clientTwo) => clientOne.balance < clientTwo.balance)
-         .map(client => client.balance)
+         .sort((clientOne, clientTwo) => clientTwo.balance - clientOne.balance)
+        .map(client => client.balance)
 
  }
 
@@ -242,8 +247,8 @@
                  totalBalance: totalBalance
              })
          })
-         .sort((bankOne, bankTwo) => bankOne.id < bankTwo.id)
-         .map(bank => bank.id)
+        .sort((bankOne, bankTwo) => bankOne.totalBalance - bankTwo.totalBalance)
+        .map(bank => bank.id)
 
      return banksWithTotalBalance;
  }
@@ -318,17 +323,17 @@
 //  console.log('Pregunta 0');
 //  console.log(listClientsIds());
 //  console.log('Pregunta 1');
-//  console.log(listClientsIdsSortByTaxNumber());
-//  console.log('Pregunta 2');
-//  console.log(sortClientsTotalBalances());
+// //  console.log(listClientsIdsSortByTaxNumber());
+// console.log('Pregunta 2');
+// console.log(sortClientsTotalBalances());
  console.log('Pregunta 3');
  console.log(banksClientsTaxNumbers());
-//  console.log('Pregunta 4');
-//  console.log(richClientsBalances());
-//  console.log('Pregunta 5');
-//  console.log(banksRankingByTotalBalance());
-//  console.log('Pregunta 6');
-//  console.log(banksFidelity());
+// console.log('Pregunta 4');
+// console.log(richClientsBalances());
+// console.log('Pregunta 5');
+// console.log(banksRankingByTotalBalance());
+// console.log('Pregunta 6');
+// console.log(banksFidelity());
 // console.log('Pregunta 7');
 // console.log(banksPoorClients());
 //  console.log('Pregunta 8');
