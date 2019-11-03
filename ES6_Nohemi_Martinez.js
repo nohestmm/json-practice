@@ -304,6 +304,17 @@
              value: value
          })
      })
+let arrayWithOnlyLessMoney = []
+     const clientWithLessMoney = banksWithTotalBalance.map(el=>el.value)
+    .map(el=>{
+        return (Object.values(el)
+        .sort((a,b) => a-b)).map((el,index)=> 
+        index === 0 ? arrayWithOnlyLessMoney.push(el): null)
+     })
+     console.log(clientWithLessMoney);
+//      const arrayWithOnlyLessMoney = []
+
+     console.log(arrayWithOnlyLessMoney)
      return JSON.stringify(banksWithTotalBalance)
  }
 
@@ -334,15 +345,15 @@
  // //  console.log(listClientsIdsSortByTaxNumber());
  // console.log('Pregunta 2');
  // console.log(sortClientsTotalBalances());
- console.log('Pregunta 3');
- console.log(banksClientsTaxNumbers());
+//  console.log('Pregunta 3');
+//  console.log(banksClientsTaxNumbers());
  // console.log('Pregunta 4');
  // console.log(richClientsBalances());
  // console.log('Pregunta 5');
  // console.log(banksRankingByTotalBalance());
- // console.log('Pregunta 6');
- // console.log(banksFidelity());
- // console.log('Pregunta 7');
- // console.log(banksPoorClients());
+ console.log('Pregunta 6');
+ console.log(banksFidelity());
+ console.log('Pregunta 7');
+ console.log(banksPoorClients());
  //  console.log('Pregunta 8');
  //  console.log(newClientRanking());
