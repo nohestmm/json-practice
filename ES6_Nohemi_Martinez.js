@@ -190,7 +190,7 @@
              })
          })
          .sort((clientOne, clientTwo) => clientTwo.totalBalance - clientOne.totalBalance)
-        .map(client => client.name)
+         .map(client => client.name)
      return clientsWithTotalBalance;
  }
 
@@ -202,34 +202,42 @@
          let clientsTaxNumbers = accounts.filter(client => client.bankId === id)
              .map(client => client.clientId)
          clientsNumbers[id] = [...new Set(clientsTaxNumbers)];
-         
+
          return clientsNumbers
      }, {})
-         let objectBanksClientsTaxNumbers = banks.map(client => {
+     let objectBanksClientsTaxNumbers = banks.map(client => {
          let value = arrayBanksClientsTaxNumbers[client.id]
          return Object.assign({
              id: client.name,
              value: value
          })
      })
-     
-       const clientsArrayOrderByName = clients.sort((clientOne, clientTwo) => clientOne.name.localeCompare(clientTwo.name))
-    //   .map((client => client.id))
-   console.log(clientsArrayOrderByName)
-    const arrayOrderById = clientsArrayOrderByName.map((client => client.id))
-    console.log(arrayOrderById)  
-    const arrayOderByTaxnumber =  clientsArrayOrderByName.map((client => client.taxNumber))
-    console.log(arrayOderByTaxnumber)  
 
-    return (objectBanksClientsTaxNumbers)
-      
+     const clientsArrayOrderByName = clients.sort((clientOne, clientTwo) =>
+         clientOne.name.localeCompare(clientTwo.name))
+
+     console.log(clientsArrayOrderByName)
+  
+
+    objectBanksClientsTaxNumbers.forEach((el,index )=>{
+       const values = el.value;
+          values.forEach((val,pos)=>{
+      clientsArrayOrderByName.forEach((client,position) =>{
+               if(values.includes(client.id))
+        values[pos] = clientsArrayOrderByName[pos].taxNumber
+            })
+      })
+         })
+
+     return JSON.stringify(objectBanksClientsTaxNumbers)
+
  }
 
  // 4 Arreglo ordenado decrecientemente con los saldos de clientes que tengan más de 25.000 en el Banco SANTANDER
  const richClientsBalances = () => {
      return accounts.filter(client => client.balance > 25000 && client.bankId === 1)
          .sort((clientOne, clientTwo) => clientTwo.balance - clientOne.balance)
-        .map(client => client.balance)
+         .map(client => client.balance)
 
  }
 
@@ -247,8 +255,8 @@
                  totalBalance: totalBalance
              })
          })
-        .sort((bankOne, bankTwo) => bankOne.totalBalance - bankTwo.totalBalance)
-        .map(bank => bank.id)
+         .sort((bankOne, bankTwo) => bankOne.totalBalance - bankTwo.totalBalance)
+         .map(bank => bank.id)
 
      return banksWithTotalBalance;
  }
@@ -275,28 +283,28 @@
  // 7 Objeto en que las claves sean los nombres de los bancos 
  //y los valores el id de su cliente con menos dinero.
  const banksPoorClients = () => {
-    let arrayBanksClientsTaxNumbers = accounts.reduce((clientsNumbers, el) => {
-        let id = el.bankId;
-        let clientsTaxNumbers = accounts.filter(client => client.bankId === id)
-        
-            
-        clientsNumbers[id] = clientsTaxNumbers.reduce((banksBalance, bank) => {
-            let id = bank.clientId;
-            let total = bank.balance;
-            banksBalance[id] = (banksBalance[id] || 0) + total
-            return banksBalance;
-        }, {})
-         
-        return clientsNumbers
-    }, {})
-    let banksWithTotalBalance = banks.map(bank => {
-        let value = arrayBanksClientsTaxNumbers[bank.id]
-        return Object.assign({
-            id:bank.name,
-            value: value
-        })
-    })
-    return JSON.stringify(banksWithTotalBalance)
+     let arrayBanksClientsTaxNumbers = accounts.reduce((clientsNumbers, el) => {
+         let id = el.bankId;
+         let clientsTaxNumbers = accounts.filter(client => client.bankId === id)
+
+
+         clientsNumbers[id] = clientsTaxNumbers.reduce((banksBalance, bank) => {
+             let id = bank.clientId;
+             let total = bank.balance;
+             banksBalance[id] = (banksBalance[id] || 0) + total
+             return banksBalance;
+         }, {})
+
+         return clientsNumbers
+     }, {})
+     let banksWithTotalBalance = banks.map(bank => {
+         let value = arrayBanksClientsTaxNumbers[bank.id]
+         return Object.assign({
+             id: bank.name,
+             value: value
+         })
+     })
+     return JSON.stringify(banksWithTotalBalance)
  }
 
  // 8 Agregar nuevo cliente con datos ficticios a "clientes" y agregar una cuenta en el BANCO ESTADO con un saldo de 9000 para este nuevo empleado. 
@@ -320,21 +328,21 @@
 
 
  //Impresión de soluciones. No modificar.
-//  console.log('Pregunta 0');
-//  console.log(listClientsIds());
-//  console.log('Pregunta 1');
-// //  console.log(listClientsIdsSortByTaxNumber());
-// console.log('Pregunta 2');
-// console.log(sortClientsTotalBalances());
+ //  console.log('Pregunta 0');
+ //  console.log(listClientsIds());
+ //  console.log('Pregunta 1');
+ // //  console.log(listClientsIdsSortByTaxNumber());
+ // console.log('Pregunta 2');
+ // console.log(sortClientsTotalBalances());
  console.log('Pregunta 3');
  console.log(banksClientsTaxNumbers());
-// console.log('Pregunta 4');
-// console.log(richClientsBalances());
-// console.log('Pregunta 5');
-// console.log(banksRankingByTotalBalance());
-// console.log('Pregunta 6');
-// console.log(banksFidelity());
-// console.log('Pregunta 7');
-// console.log(banksPoorClients());
-//  console.log('Pregunta 8');
-//  console.log(newClientRanking());
+ // console.log('Pregunta 4');
+ // console.log(richClientsBalances());
+ // console.log('Pregunta 5');
+ // console.log(banksRankingByTotalBalance());
+ // console.log('Pregunta 6');
+ // console.log(banksFidelity());
+ // console.log('Pregunta 7');
+ // console.log(banksPoorClients());
+ //  console.log('Pregunta 8');
+ //  console.log(newClientRanking());
