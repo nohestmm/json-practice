@@ -196,8 +196,8 @@
  // 3 Objeto en que las claves sean los nombres de los bancos 
  //y los valores un arreglo con los ruts de sus clientes ordenados alfabeticamente por nombre.
  const banksClientsTaxNumbers = () => {
-     let arrayBanksClientsTaxNumbers = accounts.reduce((clientsNumbers, el) => {
-         let id = el.bankId;
+     let arrayBanksClientsTaxNumbers = accounts.reduce((clientsNumbers, element) => {
+         let id = element.bankId;
          let clientsTaxNumbers = accounts.filter(client => client.bankId === id)
              .map(client => client.clientId)
          clientsNumbers[id] = [...new Set(clientsTaxNumbers)];
@@ -218,12 +218,12 @@
      //  console.log(clientsArrayOrderByName)
 
 
-     objectBanksClientsTaxNumbers.forEach(el => {
-         const values = el.value;
-         values.forEach((val, pos) => {
-             clientsArrayOrderByName.forEach((client) => {
+     objectBanksClientsTaxNumbers.map(element => {
+         const values = element.value;
+         values.map((val, index) => {
+             clientsArrayOrderByName.map((client) => {
                  if (values.includes(client.id))
-                     values[pos] = clientsArrayOrderByName[pos].taxNumber
+                     values[index] = clientsArrayOrderByName[index].taxNumber
              })
          })
      })
@@ -262,8 +262,8 @@
  // 6 Objeto en que las claves sean los nombres de los bancos y 
  //los valores el número de clientes que solo tengan cuentas en ese banco.
  const banksFidelity = () => {
-    let newObjectWithBanksAndFidelityClients = accounts.reduce((clientsNumbers, el) => {
-        let id = el.bankId;
+    let newObjectWithBanksAndFidelityClients = accounts.reduce((clientsNumbers, element) => {
+        let id = element.bankId;
         let clientsTaxNumbers = accounts.filter(client => client.bankId === id)
             .map(client => client.clientId)
         clientsNumbers[id] = [...new Set(clientsTaxNumbers)];
@@ -284,8 +284,8 @@
  // 7 Objeto en que las claves sean los nombres de los bancos 
  //y los valores el id de su cliente con menos dinero.
  const banksPoorClients = () => {
-     let arrayBanksClientsTaxNumbers = accounts.reduce((clientsNumbers, el) => {
-         let id = el.bankId;
+     let arrayBanksClientsTaxNumbers = accounts.reduce((clientsNumbers, element) => {
+         let id = element.bankId;
          let clientsTaxNumbers = accounts.filter(client => client.bankId === id)
 
          clientsNumbers[id] = clientsTaxNumbers.reduce((banksBalance, bank) => {
@@ -305,18 +305,39 @@
          })
      })
      let arrayWithOnlyLessMoney = []
-     banksWithTotalBalance.map(el => el.value)
-         .map(el => {
-             return (Object.values(el)
-                 .sort((a, b) => a - b)).map((el, index) =>
-                 index === 0 ? arrayWithOnlyLessMoney.push(el) : null)
+     banksWithTotalBalance.map(element => element.value)
+         .map(element => {
+             return (Object.values(element)
+                 .sort((amountOne, amountTwo) => amountOne - amountTwo)).map((element, index) =>
+                 index === 0 ? 
+                 arrayWithOnlyLessMoney.push(element) 
+                 : null)
          })
 
-     console.log(arrayWithOnlyLessMoney)
+       let arrayWithIdClientsWithLessMoney = []
+     banksWithTotalBalance.map(el=>{
+         const values = el.value
+               Object.values(values).map((element,index) =>{
+            arrayWithOnlyLessMoney.includes(element)? 
+            arrayWithIdClientsWithLessMoney.push((Object.keys(values)[index]))
+            :null
+         })
+     })
+  
 
-     return JSON.stringify(banksWithTotalBalance)
+     let objectWithBanksPoorClients = banksWithTotalBalance.map((element, index) =>{
+       let value = parseInt(arrayWithIdClientsWithLessMoney[index])
+        return Object.assign({
+             id : element.id, 
+             value:value
+    
+         })
+           
+     })
 
-     //  filtrar el json que tengo por el numero del arreglo que obtuve 
+     return JSON.stringify(objectWithBanksPoorClients)
+
+    
  }
 
  // 8 Agregar nuevo cliente con datos ficticios a "clientes" y agregar una cuenta en el BANCO ESTADO con un saldo de 9000 para este nuevo empleado. 
